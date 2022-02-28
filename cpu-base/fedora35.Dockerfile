@@ -36,6 +36,8 @@ RUN dnf install -y \
     glibc-devel.i686 \
     glibc-static \
     glibc-static.i686 \
+    hwloc \
+    hwloc-devel \
     iputils \
     json-devel \
     libgcc \
@@ -98,26 +100,26 @@ RUN dnf install -y \
 RUN dnf clean all
 
 WORKDIR /deps
+
+RUN echo "/usr/local/lib64" > /etc/ld.so.conf.d/general-lib64.conf
+
 RUN git clone \
     --recursive \
     --depth 1 \
     --branch ${PROTOBUF_VERSION} \
     https://github.com/protocolbuffers/protobuf.git protobuf && \
-    cd protobuf && \
-    mkdir build && \
-    cd build && \
+    mkdir protobuf/build && \
+    cd protobuf/build && \
     cmake ../cmake \
-    -D CMAKE_BUILD_TYPE=Release \
-    -D CMAKE_INSTALL_LIBDIR=lib64 \
-    -D CMAKE_INSTALL_PREFIX=/usr \
-    -D CMAKE_INSTALL_SYSCONFDIR=/etc \
-    -D CMAKE_POSITION_INDEPENDENT_CODE=ON \
-    -D protobuf_BUILD_SHARED_LIBS=OFF \
-    -D protobuf_BUILD_TESTS=OFF && \
+    -D CMAKE_BUILD_TYPE="Release" \
+    -D CMAKE_POSITION_INDEPENDENT_CODE="ON" \
+    -D protobuf_BUILD_SHARED_LIBS="OFF" \
+    -D protobuf_BUILD_TESTS="OFF" && \
     make -j$(nproc) && \
     make install && \
     cd /deps/protobuf/python && \
-    python3 -m pip install -e .
+    python3 setup.py install && \
+    ldconfig
 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain stable -y
 

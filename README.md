@@ -16,70 +16,99 @@ docker pull ghcr.io/pinteraktif/dlcv-images/cpu-vision:fedora35
 <p>
 
 ```text
-Package            Version Location
------------------- ------- ---------------------
-appdirs            1.4.4
-astroid            2.6.6
-beautifulsoup4     4.9.3
-Bottleneck         1.3.2
-Brotli             1.0.9
-charset-normalizer 2.0.4
-cycler             0.10.0
-Cython             0.29.24
-distlib            0.3.2
-filelock           3.0.12
-flake8             3.9.2
-fonttools          4.26.1
-fs                 2.4.11
-gpg                1.15.1
-idna               3.2
-isort              5.9.3
-kiwisolver         1.3.2
-lazy-object-proxy  1.6.0
-libcomps           0.1.18
-libsass            0.20.0
-lit                13.0.0
-lxml               4.6.5
-matplotlib         3.5.1
-mccabe             0.6.1
-munkres            1.1.2
-numexpr            2.7.1
-numpy              1.21.5
-olefile            0.46
-onnx               1.11.0  /deps/onnx
-packaging          21.0
-pandas             1.3.3
-pandas-datareader  0.10.0
-Pillow             8.3.2
-pip                21.2.3
-platformdirs       2.2.0
-protobuf           3.16.0  /deps/protobuf/python
-pycairo            1.20.1
-pycodestyle        2.7.0
-pyflakes           2.3.1
-pylint             2.9.6
-pypandoc           1.7.2
-pyparsing          2.4.7
-PySocks            1.7.1
-python-dateutil    2.8.1
-pytz               2021.3
-requests           2.27.0
-rpm                4.17.0
-scipy              1.7.3
-setuptools         57.4.0
-six                1.16.0
-soupsieve          2.3.1
-tables             3.6.1
-TBB                0.1
-toml               0.10.2
-typed-ast          1.4.3
-typing_extensions  4.1.1
-urllib3            1.26.7
-virtualenv         20.8.1
-wheel              0.36.2
-wrapt              1.12.1
-xlrd               2.0.1
-xlwt               1.3.0
+Package              Version
+-------------------- ----------
+albumentations       1.1.0
+appdirs              1.4.4
+astroid              2.6.6
+attrs                21.2.0
+beautifulsoup4       4.9.3
+Bottleneck           1.3.2
+Brotli               1.0.9
+Cerberus             1.3.4
+charset-normalizer   2.0.4
+cycler               0.10.0
+Cython               0.29.24
+distlib              0.3.2
+easydict             1.9
+filelock             3.0.12
+flake8               3.9.2
+flatbuffers          2.0
+fonttools            4.26.1
+fs                   2.4.11
+gpg                  1.15.1
+h5py                 3.6.0
+idna                 3.2
+imageio              2.16.1
+imutils              0.5.4
+iniconfig            1.1.1
+insightface          0.6.2
+isort                5.9.3
+joblib               1.1.0
+kiwisolver           1.3.2
+lazy-object-proxy    1.6.0
+libcomps             0.1.18
+libsass              0.20.0
+lit                  13.0.0
+lxml                 4.6.5
+matplotlib           3.5.1
+mccabe               0.6.1
+mpmath               1.2.1
+munkres              1.1.2
+networkx             2.6.3
+numexpr              2.7.1
+numpy                1.21.5
+olefile              0.46
+onnx                 1.11.0
+onnxruntime          1.10.0
+onnxruntime-training 1.10.0+cpu
+packaging            21.0
+pandas               1.3.3
+pandas-datareader    0.10.0
+Pillow               8.3.2
+pip                  22.0.3
+platformdirs         2.2.0
+pluggy               0.13.1
+prettytable          3.1.1
+protobuf             3.16.0
+py                   1.11.0
+pycairo              1.20.1
+pycodestyle          2.7.0
+pyflakes             2.3.1
+pylint               2.9.6
+pypandoc             1.7.2
+pyparsing            2.4.7
+PySocks              1.7.1
+pytest               6.2.4
+python-dateutil      2.8.1
+pytz                 2021.3
+PyWavelets           1.2.0
+PyYAML               6.0
+qudida               0.0.4
+requests             2.27.0
+rpm                  4.17.0
+scikit-image         0.19.2
+scikit-learn         1.0.2
+scipy                1.7.3
+setuptools           57.4.0
+six                  1.16.0
+soupsieve            2.3.1
+sympy                1.9
+tables               3.6.1
+TBB                  0.1
+threadpoolctl        3.1.0
+tifffile             2022.2.9
+toml                 0.10.2
+tqdm                 4.63.0
+typed-ast            1.4.3
+typing_extensions    4.1.1
+urllib3              1.26.7
+virtualenv           20.8.1
+wcwidth              0.2.5
+wheel                0.37.1
+wrapt                1.12.1
+xlrd                 2.0.1
+xlwt                 1.3.0
 ```
 
 </p>
@@ -88,147 +117,156 @@ xlwt               1.3.0
 ### System Packages - `cpu-vision:fedora35`
 
 ```bash
-> pkg-config --list-all
+> pkg-config --list-package-names | while read package; do printf "%-25s => %s\n" ${package} $(pkg-config --modversion ${package}); done
 ```
 
 <details>
 <p>
 
 ```text
-opencv4                        OpenCV - Open Source Computer Vision Library
-zlib                           zlib - zlib compression library
-libcrypt                       libxcrypt - Extended crypt library for DES, MD5, Blowfish and others
-libxcrypt                      libxcrypt - Extended crypt library for DES, MD5, Blowfish and others
-libelf                         libelf - elfutils libelf library to read and write ELF files
-icu-i18n                       icu-i18n - International Components for Unicode: Internationalization library
-icu-io                         icu-io - International Components for Unicode: Stream and I/O Library
-icu-uc                         icu-uc - International Components for Unicode: Common and Data libraries
-liblzma                        liblzma - General purpose data compression library
-libdebuginfod                  debuginfod - elfutils library to query debuginfo files from debuginfod servers
-libzstd                        zstd - fast lossless compression algorithm library
-form                           form - ncurses 6.2 add-on library
-formw                          formw - ncurses 6.2 add-on library
-menu                           menu - ncurses 6.2 add-on library
-menuw                          menuw - ncurses 6.2 add-on library
-ncurses++                      ncurses++ - ncurses 6.2 add-on library
-ncurses++w                     ncurses++w - ncurses 6.2 add-on library
-ncurses                        ncurses - ncurses 6.2 library
-ncursesw                       ncursesw - ncurses 6.2 library
-panel                          panel - ncurses 6.2 add-on library
-panelw                         panelw - ncurses 6.2 add-on library
-tic                            tic - ncurses 6.2 add-on library
-tinfo                          tinfo - ncurses 6.2 terminal interface library
-libedit                        libedit - command line editor library provides generic line editing, history, and tokenization functions.
-python-3.10-embed              Python - Embed Python into an application
-python-3.10                    Python - Build a C extension for Python
-python                         Python - Build a C extension for Python
-python3-embed                  Python - Embed Python into an application
-python3                        Python - Build a C extension for Python
-numa                           numa - NUMA policy library
-libdw                          libdw - elfutils library for DWARF data and ELF file or process inspection
-libsasl2                       Cyrus SASL - Cyrus SASL implementation
-libgsasl                       libgsasl - GNU Simple Authentication and Security Layer (SASL)
-libsass                        libsass - A C implementation of a Sass compiler
-libsodium                      libsodium - A modern and easy-to-use crypto library
-libusb-1.0                     libusb-1.0 - C API for USB device access from Linux, Mac OS X, Windows, OpenBSD/NetBSD and Solaris userspace
-libcrypto                      OpenSSL-libcrypto - OpenSSL cryptography library
-libssl                         OpenSSL-libssl - Secure Sockets Layer and cryptography libraries
-openssl                        OpenSSL - Secure Sockets Layer and cryptography libraries and tools
-tbb                            Threading Building Blocks - The Threading Building Blocks library abstracts low-level threading details
-tbbmalloc                      Threading Building Blocks Scalable Allocator - Implementation of Scalable Memory Allocator of Threading Building Blocks
-tbbmalloc_proxy                Threading Building Blocks Scallable Malloc Proxy - Implementation of proxy that redirects memory allocation calls to TBB Scalable Memory Allocator
-nlohmann_json                  nlohmann_json - JSON for Modern C++
-ogg                            ogg - ogg is a library for manipulating ogg bitstreams
-libpng                         libpng - Loads and saves PNG files
-libpng16                       libpng - Loads and saves PNG files
-x264                           x264 - H.264 (MPEG4 AVC) encoder library
-gtest                          gtest - GoogleTest (without main() function)
-gtest_main                     gtest_main - GoogleTest (with main() function)
-SvtAv1Dec                      SvtAv1Dec - SVT (Scalable Video Technology) for AV1 decoder library
-openh264                       OpenH264 - OpenH264 is a codec library which supports H.264 encoding and decoding. It is suitable for use in real time applications such as WebRTC.
-libhwy-contrib                 libhwy-contrib - Additions to Highway: image and math library
-libhwy-test                    libhwy-test - Efficient and performance-portable SIMD wrapper, test helpers.
-libhwy                         libhwy - Efficient and performance-portable SIMD wrapper
-graphite2                      Graphite2 - Font rendering engine for Complex Scripts
-libvmaf                        libvmaf - VMAF, Video Multimethod Assessment Fusion
-fribidi                        GNU FriBidi - Unicode Bidirectional Algorithm Library
-valgrind                       Valgrind - A dynamic binary instrumentation framework
-sysprof-capture-4              sysprof-capture-4 - The static capture library for tools that generate profiling capture data
-libavformat                    libavformat - FFmpeg container format library
-libdrm_intel                   libdrm_intel - Userspace interface to intel kernel DRM services
-libpcre2-16                    libpcre2-16 - PCRE2 - Perl compatible regular expressions C library (2nd API) with 16 bit character support
-libpcre2-32                    libpcre2-32 - PCRE2 - Perl compatible regular expressions C library (2nd API) with 32 bit character support
-libpcre2-8                     libpcre2-8 - PCRE2 - Perl compatible regular expressions C library (2nd API) with 8 bit character support
-libpcre2-posix                 libpcre2-posix - Posix compatible interface to libpcre2-8
-libxml-2.0                     libXML - libXML library version2.
-libsepol                       libsepol - SELinux policy library
-libselinux                     libselinux - SELinux utility library
-blkid                          blkid - Block device id library
-mount                          mount - mount library
-pciaccess                      pciaccess - Library providing generic access to the PCI bus and devices.
-fdk-aac                        Fraunhofer FDK AAC Codec Library - AAC codec library
-SvtAv1Enc                      SvtAv1Enc - SVT (Scalable Video Technology) for AV1 encoder library
-libdrm_nouveau                 libdrm_nouveau - Userspace interface to nouveau kernel DRM services
-libpcre                        libpcre - PCRE - Perl compatible regular expressions C library with 8 bit character support
-libpcre16                      libpcre16 - PCRE - Perl compatible regular expressions C library with 16 bit character support
-libpcre32                      libpcre32 - PCRE - Perl compatible regular expressions C library with 32 bit character support
-libpcrecpp                     libpcrecpp - PCRECPP - C++ wrapper for PCRE
-libpcreposix                   libpcreposix - PCREPosix - Posix compatible interface to libpcre
-libffi                         libffi - Library supporting Foreign Function Interfaces
-aom                            aom - Alliance for Open Media AV1 codec library v3.2.0.
-libass                         libass - LibASS is an SSA/ASS subtitles rendering library
-libswresample                  libswresample - FFmpeg audio resampling library
-libdrm_radeon                  libdrm_radeon - Userspace interface to kernel DRM services for radeon
-libavcodec                     libavcodec - FFmpeg codec library
-libavresample                  libavresample - Libav audio resampling library
-libkms                         libkms - Library that abstracts away the different mm interfaces for kernel drivers
-gio-2.0                        GIO - glib I/O library
-gio-unix-2.0                   GIO unix specific APIs - unix specific headers for glib I/O library
-glib-2.0                       GLib - C Utility Library
-gmodule-2.0                    GModule - Dynamic module loader for GLib
-gmodule-export-2.0             GModule - Dynamic module loader for GLib
-gmodule-no-export-2.0          GModule - Dynamic module loader for GLib
-gobject-2.0                    GObject - GLib Type, Object, Parameter and Signal Library
-gthread-2.0                    GThread - Thread support for GLib
-bzip2                          bzip2 - A file compression library
-libavutil                      libavutil - FFmpeg utility library
-libdrm_amdgpu                  libdrm_amdgpu - Userspace interface to kernel DRM services for amdgpu
-libbrotlicommon                libbrotlicommon - Brotli common dictionary library
-libbrotlidec                   libbrotlidec - Brotli decoder library
-libbrotlienc                   libbrotlienc - Brotli encoder library
-libavdevice                    libavdevice - FFmpeg device handling library
-libpostproc                    libpostproc - FFmpeg postprocessing library
-libwebp                        libwebp - Library for the WebP graphics format
-harfbuzz-gobject               harfbuzz - HarfBuzz text shaping library GObject integration
-harfbuzz-icu                   harfbuzz - HarfBuzz text shaping library ICU integration
-harfbuzz-subset                harfbuzz - HarfBuzz font subsetter
-harfbuzz                       harfbuzz - HarfBuzz text shaping library
-freetype2                      FreeType 2 - A free, high-quality, and portable font engine.
-fontconfig                     Fontconfig - Font configuration and customization library
-SvtHevcEnc                     SvtHevcEnc - SVT (Scalable Video Technology) for HEVC encoder library
-libjxl                         libjxl - Loads and saves JPEG XL files
-libjxl_threads                 libjxl_threads - JPEG XL multi-thread runner using std::threads.
-libswscale                     libswscale - FFmpeg image rescaling library
-libdrm                         libdrm - Userspace interface to kernel DRM services
-libavfilter                    libavfilter - FFmpeg audio/video filtering library
-libwebpdecoder                 libwebpdecoder - Library for the WebP graphics format (decode only)
-vorbis                         vorbis - vorbis is the primary Ogg Vorbis library
-vorbisenc                      vorbisenc - vorbisenc is a library that provides a convenient API for setting up an encoding environment using libvorbis
-vorbisfile                     vorbisfile - vorbisfile is a library that provides a convenient high-level API for decoding and basic manipulation of all Vorbis I audio streams
-opus                           Opus - Opus IETF audio codec (floating-point, custom modes build)
-vpx                            vpx - WebM Project VPx codec implementation
-x265                           x265 - H.265/HEVC video encoder
-dav1d                          libdav1d - AV1 decoding library
-libwebpdemux                   libwebpdemux - Library for parsing the WebP graphics format container
-libwebpmux                     libwebpmux - Library for manipulating the WebP graphics format container
-protobuf                       Protocol Buffers - Google's Data Interchange Format
-protobuf-lite                  Protocol Buffers - Google's Data Interchange Format
-systemd                        systemd - systemd System and Service Manager
-udev                           udev - udev
-shared-mime-info               shared-mime-info - Freedesktop common MIME database
-dracut                         dracut - dracut
-eigen3                         Eigen3 - A C++ template library for linear algebra: vectors, matrices, and related algorithms
-bash-completion                bash-completion - programmable completion for the bash shell
+protobuf                  => 3.16.0.0
+protobuf-lite             => 3.16.0.0
+opencv4                   => 4.5.5
+zlib                      => 1.2.11
+libcrypt                  => 4.4.28
+libxcrypt                 => 4.4.28
+libelf                    => 0.186
+icu-i18n                  => 69.1
+icu-io                    => 69.1
+icu-uc                    => 69.1
+liblzma                   => 5.2.5
+libdebuginfod             => 0.186
+libzstd                   => 1.5.2
+form                      => 6.2.20210508
+formw                     => 6.2.20210508
+menu                      => 6.2.20210508
+menuw                     => 6.2.20210508
+ncurses++                 => 6.2.20210508
+ncurses++w                => 6.2.20210508
+ncurses                   => 6.2.20210508
+ncursesw                  => 6.2.20210508
+panel                     => 6.2.20210508
+panelw                    => 6.2.20210508
+tic                       => 6.2.20210508
+tinfo                     => 6.2.20210508
+libedit                   => 3.1
+libefa                    => 1.1.39.0
+libibmad                  => 5.3.39.0
+libibnetdisc              => 5.0.39.0
+libibumad                 => 3.2.39.0
+libibverbs                => 1.14.39.0
+libmlx4                   => 1.0.39.0
+libmlx5                   => 1.22.39.0
+librdmacm                 => 1.3.39.0
+python-3.10-embed         => 3.10
+python-3.10               => 3.10
+python                    => 3.10
+python3-embed             => 3.10
+python3                   => 3.10
+hwloc                     => 2.5.0
+numa                      => 2.0.14
+libdw                     => 0.186
+libsasl2                  => 2.1.27
+libgsasl                  => 1.10.0
+libsass                   => 3.6.4
+libsodium                 => 1.0.18
+libusb-1.0                => 1.0.24
+libcrypto                 => 1.1.1l
+libssl                    => 1.1.1l
+openssl                   => 1.1.1l
+tbb                       => 2020.3
+tbbmalloc                 => 2020.3
+tbbmalloc_proxy           => 2020.3
+nlohmann_json             => 3.10.5
+ogg                       => 1.3.5
+libpng                    => 1.6.37
+libpng16                  => 1.6.37
+x264                      => 0.163.3060
+gtest                     => 1.10.0
+gtest_main                => 1.10.0
+SvtAv1Dec                 => 0.8.7
+openh264                  => 2.1.1
+libhwy-contrib            => 0.15.0
+libhwy-test               => 0.15.0
+libhwy                    => 0.15.0
+graphite2                 => 3.0.1
+libvmaf                   => 2.1.1
+fribidi                   => 1.0.10
+valgrind                  => 3.18.1
+sysprof-capture-4         => 3.42.1
+libavformat               => 58.76.100
+libdrm_intel              => 2.4.110
+libpcre2-16               => 10.39
+libpcre2-32               => 10.39
+libpcre2-8                => 10.39
+libpcre2-posix            => 10.39
+libxml-2.0                => 2.9.13
+libsepol                  => 3.3
+libselinux                => 3.3
+blkid                     => 2.37.4
+mount                     => 2.37.4
+pciaccess                 => 0.16
+fdk-aac                   => 2.0.2
+SvtAv1Enc                 => 0.8.7
+libdrm_nouveau            => 2.4.110
+libpcre                   => 8.45
+libpcre16                 => 8.45
+libpcre32                 => 8.45
+libpcrecpp                => 8.45
+libpcreposix              => 8.45
+libffi                    => 3.1
+aom                       => 3.2.0
+libass                    => 0.14.0
+libswresample             => 3.9.100
+libdrm_radeon             => 2.4.110
+libavcodec                => 58.134.100
+libavresample             => 4.0.0
+libkms                    => 1.0.0
+gio-2.0                   => 2.70.4
+gio-unix-2.0              => 2.70.4
+glib-2.0                  => 2.70.4
+gmodule-2.0               => 2.70.4
+gmodule-export-2.0        => 2.70.4
+gmodule-no-export-2.0     => 2.70.4
+gobject-2.0               => 2.70.4
+gthread-2.0               => 2.70.4
+bzip2                     => 1.0.6
+libavutil                 => 56.70.100
+libdrm_amdgpu             => 2.4.110
+libbrotlicommon           => 1.0.9
+libbrotlidec              => 1.0.9
+libbrotlienc              => 1.0.9
+libavdevice               => 58.13.100
+libpostproc               => 55.9.100
+libwebp                   => 1.2.2
+harfbuzz-gobject          => 2.9.1
+harfbuzz-icu              => 2.9.1
+harfbuzz-subset           => 2.9.1
+harfbuzz                  => 2.9.1
+freetype2                 => 24.0.18
+fontconfig                => 2.13.94
+SvtHevcEnc                => 1.5.0
+libjxl                    => 0.6.1
+libjxl_threads            => 0.6.1
+libswscale                => 5.9.100
+libdrm                    => 2.4.110
+libavfilter               => 7.110.100
+libwebpdecoder            => 1.2.2
+vorbis                    => 1.3.7
+vorbisenc                 => 1.3.7
+vorbisfile                => 1.3.7
+opus                      => 1.3.1
+vpx                       => 1.10.0
+x265                      => 3.5
+dav1d                     => 0.9.2
+libwebpdemux              => 1.2.2
+libwebpmux                => 1.2.2
+systemd                   => 249
+udev                      => 249
+shared-mime-info          => 2.1
+dracut                    => 53d6a61
+eigen3                    => 3.3.9
+bash-completion           => 2.11
 ```
 
 </p>

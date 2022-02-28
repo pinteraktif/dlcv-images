@@ -21,6 +21,7 @@ RUN dnf install -y \
     lame \
     lame-devel \
     lame-libs \
+    langpacks-en \
     libaom \
     libaom-devel \
     libass \
@@ -55,6 +56,7 @@ RUN dnf install -y \
     python3-numpy \
     python3-pandas \
     python3-pypandoc \
+    python3-pytest \
     svt-av1 \
     svt-av1-devel \
     svt-av1-libs \
@@ -76,9 +78,7 @@ RUN git clone --recursive --branch ${FFMPEG_VERSION} --depth 1 https://github.co
     git clone --recursive --branch ${ONNX_VERSION} --depth 1 https://github.com/onnx/onnx.git onnx && \
     git clone --recursive --branch ${ONNXRUNTIME_VERSION} --depth 1 https://github.com/microsoft/onnxruntime.git onnxruntime && \
     git clone --recursive --branch ${OPENCV_VERSION} --depth 1 https://github.com/opencv/opencv_contrib.git opencv-contrib && \
-    git clone --recursive --branch ${OPENCV_VERSION} --depth 1 https://github.com/opencv/opencv.git opencv && \
-    git clone --recursive --branch ${OPENVINO_VERSION} --depth 1 https://github.com/openvinotoolkit/openvino.git openvino && \
-    echo "/usr/local/lib64" > /etc/ld.so.conf.d/opencv.conf
+    git clone --recursive --branch ${OPENCV_VERSION} --depth 1 https://github.com/opencv/opencv.git opencv
 
 RUN cd ffmpeg && \
     ./configure \
@@ -145,22 +145,38 @@ RUN mkdir -p opencv/build && \
 
 RUN cd onnx && \
     export CMAKE_ARGS="-DONNX_USE_LITE_PROTO=ON" && \
-    python3 -m pip install -e . && \
+    python3 setup.py install && \
     ldconfig && \
     unset CMAKE_ARGS
 
-#RUN mkdir -p openvino/build && \
-#    cd openvino/build && \
-#    cmake \
-#    -D CMAKE_BUILD_TYPE="Release" \
-#    -D ENABLE_CLANG_FORMAT="ON " \
-#    -D ENABLE_DOCS="ON" \
-#    -D ENABLE_ERROR_HIGHLIGH="ON" \
-#    -D ENABLE_LTO="ON" \
-#    -D ENABLE_MYRIAD="OFF" \
-#    -D ENABLE_PYTHON="ON" \
-#    -D ENABLE_VPU="OFF" \
-#    .. && \
-#    make -j$(nproc) && \
-#    make install && \
-#    ldconfig
+RUN cd onnxruntime && \
+    ./build.sh \
+    --build_shared_lib \
+    --build_wheel \
+    --config Release \
+    --enable_pybind \
+    --enable_training \
+    --parallel \
+    --skip_onnx_test && \
+    ./build.sh \
+    --build_shared_lib \
+    --build_wheel \
+    --config Release \
+    --enable_pybind \
+    --parallel \
+    --skip_onnx_test && \
+    python3 -m pip install build/Linux/Release/dist/*.whl && \
+    ldconfig
+
+RUN python3 -m pip install -U pip && \
+    python3 -m pip install -U wheel && \
+    python3 -m pip install insightface && \
+    python3 -m pip uninstall -y opencv-python-headless
+
+RUN gcc -v && echo "" && \
+    clang -v && echo "" && \
+    rustc -vV && echo "" && \
+    python --version
+
+RUN python3 -m pip list && echo "" && \
+    pkg-config --list-all
