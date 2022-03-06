@@ -117,7 +117,10 @@ xlwt                 1.3.0
 ### System Packages - `cpu-vision:fedora35`
 
 ```bash
-> pkg-config --list-package-names | while read package; do printf "%-25s => %s\n" ${package} $(pkg-config --modversion ${package}); done
+> pkg-config --list-package-names | \
+while read package; \
+do printf "%-25s => %s\n" ${package} $(pkg-config --modversion ${package}); \
+done
 ```
 
 <details>
@@ -267,6 +270,257 @@ shared-mime-info          => 2.1
 dracut                    => 53d6a61
 eigen3                    => 3.3.9
 bash-completion           => 2.11
+```
+
+</p>
+</details>
+
+## CPU Based CV - Ubuntu 20.04
+
+```bash
+docker pull ghcr.io/pinteraktif/dlcv-images/cpu-vision:ubuntu20.04
+```
+
+### Python Packages - `cpu-vision:ubuntu20.04`
+
+```bash
+> python3 -m pip list
+```
+
+<details>
+<p>
+
+```text
+Package              Version
+-------------------- ----------
+astroid              2.3.3
+atomicwrites         1.1.5
+attrs                19.3.0
+beautifulsoup4       4.10.0
+Cerberus             1.3.4
+Cython               0.29.14
+entrypoints          0.3
+flake8               3.7.9
+flatbuffers          2.0
+h5py                 3.6.0
+importlib-metadata   1.5.0
+isort                4.3.4
+lazy-object-proxy    1.4.3
+logilab-common       1.4.3
+mccabe               0.6.1
+meson                0.53.2
+more-itertools       4.2.0
+mpmath               1.2.1
+numpy                1.17.4
+onnx                 1.11.0
+onnxruntime          1.10.0
+onnxruntime-training 1.10.0+cpu
+packaging            20.3
+pip                  22.0.3
+pluggy               0.13.0
+protobuf             3.16.0
+py                   1.8.1
+pycodestyle          2.5.0
+pyflakes             2.1.1
+Pygments             2.3.1
+pylint               2.4.4
+pyparsing            2.4.6
+pytest               4.6.9
+PyYAML               5.3.1
+setuptools           45.2.0
+six                  1.16.0
+soupsieve            2.3.1
+sympy                1.9
+typing_extensions    4.1.1
+wcwidth              0.1.8
+wheel                0.34.2
+wrapt                1.11.2
+zipp                 1.0.0
+```
+
+</p>
+</details>
+
+### System Packages - `cpu-vision:ubuntu20.04`
+
+```bash
+> pkg-config --list-all | \
+while read package; \
+do package_name=$(echo $package | cut -d' ' -f1); \
+package_version=$(pkg-config --modversion ${package_name}); \
+package_version=$(echo $package_version | cut -d' ' -f1); \
+printf "%-25s => %s\n" ${package_name} ${package_version}; \
+done
+```
+
+<details>
+<p>
+
+```text
+freexl                    => 1.0.5
+libcrypto                 => 1.1.1f
+hdf5-serial               => 1.10.4
+libffi                    => 3.3
+libdrm_amdgpu             => 2.4.107
+protobuf-lite             => 3.16.0.0
+ncurses++                 => 6.2.20200212
+gio-unix-2.0              => 2.64.6
+ncursesw                  => 6.2.20200212
+sqlite3                   => 3.31.1
+mysqlclient               => 21.2.28
+libpcre2-posix            => 10.34
+cfitsio                   => 3.47
+ogg                       => 1.3.4
+lapack                    => 0.3.8+ds
+liblzma                   => 5.2.4
+libsasl2                  => 2.1.27
+libavresample             => 4.0.0
+pciaccess                 => 0.16
+libavdevice               => 58.13.100
+libdrm                    => 2.4.107
+vorbis                    => 1.3.6
+libdrm_radeon             => 2.4.107
+libdapclient              => 3.20.5
+minizip                   => 1.2.8
+LLVMSPIRVLib              => 10.0.0.1
+ncurses                   => 6.2.20200212
+libdrm_nouveau            => 2.4.107
+opencv4                   => 4.5.5
+ncurses++w                => 6.2.20200212
+libpostproc               => 55.9.100
+vorbisenc                 => 1.3.6
+libarchive                => 3.4.0
+xerces-c                  => 3.2.2
+libavformat               => 58.76.100
+libwebpmux                => 0.6.1
+libva-glx                 => 1.7.0
+libopenjp2                => 2.3.1
+bash-completion           => 2.10
+libva-drm                 => 1.7.0
+libpq                     => 12.9
+libzstd                   => 1.4.4
+libva                     => 1.7.0
+fyba                      => 4.1.1
+icu-uc                    => 66.1
+tbb                       =>
+harfbuzz                  => 2.6.4
+wayland-egl               => 18.1.0
+libva-x11                 => 1.7.0
+panelw                    => 6.2.20200212
+wayland-cursor            => 1.18.0
+expat                     => 2.2.9
+eigen3                    => 3.3.7
+libpcreposix              => 8.39
+glib-2.0                  => 2.64.6
+menuw                     => 6.2.20200212
+opus                      => 1.3.1
+libopenjp3d               => 2.3.1
+blas-atlas                => 3.10.3
+lapack-atlas              => 3.10.3
+libssl                    => 1.1.1f
+arpack                    => 3.7.0
+poppler-splash            => 0.86.1
+libusb                    => 0.1.12
+libpng16                  => 1.6.37
+tic                       => 6.2.20200212
+icu-io                    => 66.1
+lept                      => 1.79.0
+tinfo                     => 6.2.20200212
+blas                      => 0.3.8+ds
+gio-2.0                   => 2.64.6
+odbccr                    => 2.3.6
+odbc                      => 2.3.6
+fontconfig                => 2.13.1
+libwebpdemux              => 0.6.1
+menu                      => 6.2.20200212
+mount                     => 2.34.0
+libpcre                   => 8.39
+blkid                     => 2.34.0
+libsepol                  => 3.0
+formw                     => 6.2.20200212
+uuid                      => 2.34.0
+spatialite                => 4.3.0a
+gmodule-2.0               => 2.64.6
+graphite2                 => 3.0.1
+dav1d                     => 0.9.2
+zlib                      => 1.2.11
+libtiff-4                 => 4.1.0
+libdc1394-2               => 2.2.6
+tesseract                 => 4.1.1
+lapacke                   => 3.9.0
+fdk-aac                   => 0.1.6
+SvtAv1Enc                 => 0.9.1
+gobject-2.0               => 2.64.6
+fribidi                   => 1.0.8
+libavfilter               => 7.110.100
+poppler                   => 0.86.1
+gmodule-no-export-2.0     => 2.64.6
+python3-embed             => 3.8
+libpcre32                 => 8.39
+libass                    => 0.14.0
+libswscale                => 5.9.100
+libjpeg                   => 2.0.3
+libdap                    => 3.20.5
+form                      => 6.2.20200212
+proj                      => 6.3.1
+protobuf                  => 3.16.0.0
+python3                   => 3.8
+libraw1394                => 2.1.2
+libpcre2-32               => 10.34
+wayland-client            => 1.18.0
+json-c                    => 0.13.1
+hdf5                      => 1.10.4
+libdapserver              => 3.20.5
+aom                       => 1.0.0
+libpng                    => 1.6.37
+libcrypt                  => 4.4.10
+lapack-netlib             => 3.9.0
+odbcinst                  => 2.3.6
+libselinux                => 3.0
+gthread-2.0               => 2.64.6
+libcurl                   => 7.68.0
+icu-i18n                  => 66.1
+python-3.8                => 3.8
+libwebp                   => 0.6.1
+poppler-cairo             => 0.86.1
+netcdf                    => 4.7.3
+ogdi                      => 4.1.0
+poppler-data              => 0.4.9
+harfbuzz-icu              => 2.6.4
+wayland-server            => 1.18.0
+libxml-2.0                => 2.9.10
+libpcrecpp                => 8.39
+SvtAv1Dec                 => 0.8.7
+libelf                    => 0.176
+openssl                   => 1.1.1f
+liburiparser              => 0.9.3
+libswresample             => 3.9.100
+gmodule-export-2.0        => 2.64.6
+hwloc                     => 2.1.0
+libsodium                 => 1.0.18
+libavutil                 => 56.70.100
+libsass                   => 3.6.3
+vorbisfile                => 1.3.6
+harfbuzz-gobject          => 2.6.4
+panel                     => 6.2.20200212
+x265                      => 3.2.1
+libpcre16                 => 8.39
+libdrm_intel              => 2.4.107
+vpx                       => 1.8.2
+x264                      => 0.155.2917
+libavcodec                => 58.134.100
+libva-wayland             => 1.7.0
+libkml                    => 1.3.0
+shared-mime-info          => 1.15
+openblas                  => 0.3.8
+wayland-scanner           => 1.18.0
+libpcre2-8                => 10.34
+libopenjpip               => 2.3.1
+freetype2                 => 23.1.17
+gdal                      => 3.0.4
+libxcrypt                 => 4.4.10
+python-3.8-embed          => 3.8
+libpcre2-16               => 10.34
 ```
 
 </p>
