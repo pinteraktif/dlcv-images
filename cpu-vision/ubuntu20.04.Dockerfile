@@ -102,40 +102,6 @@ RUN cd ffmpeg && \
     make install && \
     ldconfig
 
-RUN mkdir -p opencv/build && \
-    cd opencv/build && \
-    cmake -D CMAKE_BUILD_TYPE="Release" \
-    -D BUILD_DOCS="ON" \
-    -D BUILD_EXAMPLES="OFF" \
-    -D BUILD_NEW_PYTHON_SUPPORT="ON" \
-    -D BUILD_opencv_python2="OFF" \
-    -D BUILD_opencv_python3="ON" \
-    -D BUILD_opencv_world="ON" \
-    -D BUILD_SHARED_LIBS="ON" \
-    -D CPU_BASELINE="SSE,SSE2,SSE3,SSSE3,SSE4_1,POPCNT,SSE4_2,AVX,AVX2,FP16,AVX512F,AVX512_SKX" \
-    -D CPU_DISPATCH="SSE,SSE2,SSE3,SSSE3,SSE4_1,POPCNT,SSE4_2,AVX,AVX2,FP16,AVX512F,AVX512_SKX" \
-    -D ENABLE_CCACHE="ON" \
-    -D ENABLE_FAST_MATH="ON" \
-    -D ENABLE_FLAKE8="ON" \
-    -D ENABLE_PYLINT="ON" \
-    -D HAVE_opencv_python3="ON" \
-    -D INSTALL_C_EXAMPLES="OFF" \
-    -D INSTALL_PYTHON_EXAMPLES="OFF" \
-    -D OPENCV_ENABLE_NONFREE="ON" \
-    -D OPENCV_EXTRA_MODULES_PATH="/deps/opencv-contrib/modules" \
-    -D OPENCV_GENERATE_PKGCONFIG="ON" \
-    -D PARALLEL_ENABLE_PLUGINS="ON" \
-    -D WITH_EIGEN="ON" \
-    -D WITH_FFMPEG="ON" \
-    -D WITH_ITT="OFF" \
-    -D WITH_OPENGL="OFF" \
-    -D WITH_QT="OFF" \
-    -D WITH_TBB="ON" \
-    .. && \
-    make -j$(nproc) && \
-    make install && \
-    ldconfig
-
 RUN cd onnx && \
     export CMAKE_ARGS="-DONNX_USE_LITE_PROTO=ON" && \
     python3 setup.py install && \
@@ -159,6 +125,44 @@ RUN cd onnxruntime && \
     --parallel \
     --skip_onnx_test && \
     python3 -m pip install build/Linux/Release/dist/*.whl && \
+    ldconfig
+
+RUN mkdir -p opencv/build && \
+    cd opencv/build && \
+    cmake -D CMAKE_BUILD_TYPE="Release" \
+    -D BUILD_DOCS="ON" \
+    -D BUILD_EXAMPLES="OFF" \
+    -D BUILD_NEW_PYTHON_SUPPORT="ON" \
+    -D BUILD_opencv_python2="OFF" \
+    -D BUILD_opencv_python3="ON" \
+    -D BUILD_opencv_world="ON" \
+    -D BUILD_SHARED_LIBS="ON" \
+    -D CPU_BASELINE="SSE,SSE2,SSE3,SSSE3,SSE4_1,POPCNT,SSE4_2,FP16,FMA3,AVX,AVX2,AVX_512F,AVX512_COMMON,AVX512_SKX" \
+    -D CPU_DISPATCH="SSE,SSE2,SSE3,SSSE3,SSE4_1,POPCNT,SSE4_2,FP16,FMA3,AVX,AVX2,AVX_512F,AVX512_COMMON,AVX512_SKX" \
+    -D ENABLE_CCACHE="ON" \
+    -D ENABLE_FAST_MATH="ON" \
+    -D ENABLE_FLAKE8="ON" \
+    -D ENABLE_PYLINT="ON" \
+    -D HAVE_opencv_python3="ON" \
+    -D INSTALL_C_EXAMPLES="OFF" \
+    -D INSTALL_PYTHON_EXAMPLES="OFF" \
+    -D OPENCV_ENABLE_NONFREE="ON" \
+    -D OPENCV_EXTRA_MODULES_PATH="/deps/opencv-contrib/modules" \
+    -D OPENCV_GENERATE_PKGCONFIG="ON" \
+    -D PARALLEL_ENABLE_PLUGINS="ON" \
+    -D WITH_EIGEN="ON" \
+    -D WITH_FFMPEG="ON" \
+    -D WITH_GDAL="ON" \
+    -D WITH_ITT="OFF" \
+    -D WITH_ONNX="ON" \
+    -D WITH_OPENGL="OFF" \
+    -D WITH_QT="OFF" \
+    -D WITH_TBB="ON" \
+    .. && \
+    make -j$(nproc) && \
+    make install && \
+    ln -s /usr/local/lib/python3.8/site-packages/cv2 \
+    /usr/local/lib/python3.8/dist-packages/cv2 && \
     ldconfig
 
 RUN python3 -m pip list && echo "" && \
