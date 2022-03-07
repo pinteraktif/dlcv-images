@@ -5,16 +5,31 @@ ENV FFMPEG_VERSION="n4.4.1"
 ENV ONNX_VERSION="v1.11.0"
 ENV ONNXRUNTIME_VERSION="v1.10.0"
 ENV OPENCV_VERSION="4.5.5"
-ENV OPENVINO_VERSION="2021.4.2"
+ENV OPENVINO_COMPONENTS="COMPONENTS=;intel-openvino-base__noarch;intel-openvino-dldt-base__noarch;intel-openvino-setupvars__noarch;intel-openvino-eula__noarch;intel-openvino-telemetry__noarch;intel-openvino-ie-sdk-ubuntu-focal__x86_64;intel-openvino-ie-bin-python-tools-ubuntu-focal__x86_64;intel-openvino-ie-samples__x86_64;intel-openvino-ie-rt__x86_64;intel-openvino-ie-rt-core-ubuntu-focal__x86_64;intel-openvino-ie-rt-cpu-ubuntu-focal__x86_64;intel-openvino-omz-tools__x86_64;intel-openvino-rockhopper-gna-ubuntu-focal__x86_64;intel-openvino-model-optimizer__x86_64;intel-openvino-pot__x86_64;intel-openvino-dl-workbench__x86_64;intel-openvino-omz-dev__x86_64;intel-openvino-mediasdk__x86_64;intel-openvino-docs__noarch;intel-openvino-gva-sdk__x86_64;intel-openvino-gva-dev-ubuntu-focal__x86_64;intel-openvino-base-pset"
+ENV OPENVINO_VERSION="2021.4.752"
 ENV SVTAV1_VERSION="v0.9.1"
 
-RUN git clone --recursive --branch ${DAV1D_VERSION} https://github.com/videolan/dav1d.git dav1d && \
-    git clone --recursive --branch ${FFMPEG_VERSION} --depth 1 https://github.com/FFmpeg/FFmpeg.git ffmpeg && \
-    git clone --recursive --branch ${ONNX_VERSION} --depth 1 https://github.com/onnx/onnx.git onnx && \
-    git clone --recursive --branch ${ONNXRUNTIME_VERSION} --depth 1 https://github.com/microsoft/onnxruntime.git onnxruntime && \
-    git clone --recursive --branch ${OPENCV_VERSION} --depth 1 https://github.com/opencv/opencv_contrib.git opencv-contrib && \
-    git clone --recursive --branch ${OPENCV_VERSION} --depth 1 https://github.com/opencv/opencv.git opencv && \
-    git clone --recursive --branch ${SVTAV1_VERSION} https://gitlab.com/AOMediaCodec/SVT-AV1 svt-av1
+RUN git clone --recursive --depth 1 --branch ${DAV1D_VERSION} https://github.com/videolan/dav1d.git dav1d && \
+    git clone --recursive --depth 1 --branch ${FFMPEG_VERSION} https://github.com/FFmpeg/FFmpeg.git ffmpeg && \
+    git clone --recursive --depth 1 --branch ${ONNX_VERSION} https://github.com/onnx/onnx.git onnx && \
+    git clone --recursive --depth 1 --branch ${ONNXRUNTIME_VERSION} https://github.com/microsoft/onnxruntime.git onnxruntime && \
+    git clone --recursive --depth 1 --branch ${OPENCV_VERSION} https://github.com/opencv/opencv_contrib.git opencv-contrib && \
+    git clone --recursive --depth 1 --branch ${OPENCV_VERSION} https://github.com/opencv/opencv.git opencv && \
+    git clone --recursive --depth 1 --branch ${SVTAV1_VERSION} https://gitlab.com/AOMediaCodec/SVT-AV1 svt-av1
+
+RUN aria2c -x16 -s16 "https://share.tapalogi.com/intel/l_openvino_toolkit_p_${OPENVINO_VERSION}.tgz" && \
+    tar xzvf "l_openvino_toolkit_p_${OPENVINO_VERSION}.tgz" && \
+    mv "l_openvino_toolkit_p_${OPENVINO_VERSION}" openvino && \
+    cd openvino && \
+    rm silent.cfg && \
+    echo "ACCEPT_EULA=accept" >> silent.cfg && \
+    echo "CONTINUE_WITH_OPTIONAL_ERROR=yes" >> silent.cfg && \
+    echo "PSET_INSTALL_DIR=/opt/intel" >> silent.cfg && \
+    echo "CONTINUE_WITH_INSTALLDIR_OVERWRITE=yes" >> silent.cfg && \
+    echo "PSET_MODE=install" >> silent.cfg && \
+    echo "INTEL_SW_IMPROVEMENT_PROGRAM_CONSENT=no" >> silent.cfg && \
+    echo ${OPENVINO_COMPONENTS} >> silent.cfg && \
+    rm "../l_openvino_toolkit_p_${OPENVINO_VERSION}.tgz"
 
 RUN mkdir dav1d/build && \
     cd dav1d/build && \
@@ -38,6 +53,7 @@ RUN mkdir svt-av1/build && \
     ldconfig
 
 RUN DEBIAN_FRONTEND="noninteractive" apt install -y \
+    cpio \
     cython3 \
     flake8 \
     graphviz \
@@ -64,6 +80,7 @@ RUN DEBIAN_FRONTEND="noninteractive" apt install -y \
     libx264-dev \
     libx265-dev \
     libxvidcore-dev \
+    pciutils \
     pylint \
     python3-numpy \
     python3-pytest
@@ -108,25 +125,6 @@ RUN cd onnx && \
     ldconfig && \
     unset CMAKE_ARGS
 
-RUN cd onnxruntime && \
-    ./build.sh \
-    --build_shared_lib \
-    --build_wheel \
-    --config Release \
-    --enable_pybind \
-    --enable_training \
-    --parallel \
-    --skip_onnx_test && \
-    ./build.sh \
-    --build_shared_lib \
-    --build_wheel \
-    --config Release \
-    --enable_pybind \
-    --parallel \
-    --skip_onnx_test && \
-    python3 -m pip install build/Linux/Release/dist/*.whl && \
-    ldconfig
-
 RUN mkdir -p opencv/build && \
     cd opencv/build && \
     cmake -D CMAKE_BUILD_TYPE="Release" \
@@ -139,7 +137,7 @@ RUN mkdir -p opencv/build && \
     -D BUILD_SHARED_LIBS="ON" \
     -D CPU_BASELINE="SSE,SSE2,SSE3,SSSE3,SSE4_1,POPCNT,SSE4_2,FP16,FMA3,AVX,AVX2,AVX_512F,AVX512_COMMON,AVX512_SKX" \
     -D CPU_DISPATCH="SSE,SSE2,SSE3,SSSE3,SSE4_1,POPCNT,SSE4_2,FP16,FMA3,AVX,AVX2,AVX_512F,AVX512_COMMON,AVX512_SKX" \
-    -D ENABLE_CCACHE="ON" \
+    -D ENABLE_CCACHE="OFF" \
     -D ENABLE_FAST_MATH="ON" \
     -D ENABLE_FLAKE8="ON" \
     -D ENABLE_PYLINT="ON" \
@@ -154,7 +152,6 @@ RUN mkdir -p opencv/build && \
     -D WITH_FFMPEG="ON" \
     -D WITH_GDAL="ON" \
     -D WITH_ITT="OFF" \
-    -D WITH_ONNX="ON" \
     -D WITH_OPENGL="OFF" \
     -D WITH_QT="OFF" \
     -D WITH_TBB="ON" \
@@ -163,6 +160,23 @@ RUN mkdir -p opencv/build && \
     make install && \
     ln -s /usr/local/lib/python3.8/site-packages/cv2 \
     /usr/local/lib/python3.8/dist-packages/cv2 && \
+    ldconfig
+
+SHELL ["/bin/bash", "-c"]
+
+RUN cd /deps/openvino && \
+    ./install.sh -s silent.cfg && \
+    source /opt/intel/openvino_2021/bin/setupvars.sh && \
+    cd /deps/onnxruntime && \
+    ./build.sh \
+    --build_shared_lib \
+    --build_wheel \
+    --config Release \
+    --enable_pybind \
+    --use_openvino CPU_FP32 \
+    --parallel \
+    --skip_tests && \
+    python3 -m pip install build/Linux/Release/dist/*.whl && \
     ldconfig
 
 RUN python3 -m pip list && echo "" && \

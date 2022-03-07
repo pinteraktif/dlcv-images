@@ -15,7 +15,6 @@ RUN dnf install -y \
     boost-devel \
     boost-json \
     ca-certificates \
-    ccache \
     clang \
     clang-analyzer \
     clang-devel \

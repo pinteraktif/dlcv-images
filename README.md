@@ -292,17 +292,15 @@ docker pull ghcr.io/pinteraktif/dlcv-images/cpu-vision:ubuntu20.04
 
 ```text
 Package              Version
--------------------- ----------
+-------------------- -------
 astroid              2.3.3
 atomicwrites         1.1.5
 attrs                19.3.0
 beautifulsoup4       4.10.0
-Cerberus             1.3.4
 Cython               0.29.14
 entrypoints          0.3
 flake8               3.7.9
 flatbuffers          2.0
-h5py                 3.6.0
 importlib-metadata   1.5.0
 isort                4.3.4
 lazy-object-proxy    1.4.3
@@ -310,11 +308,9 @@ logilab-common       1.4.3
 mccabe               0.6.1
 meson                0.53.2
 more-itertools       4.2.0
-mpmath               1.2.1
 numpy                1.17.4
 onnx                 1.11.0
-onnxruntime          1.10.0
-onnxruntime-training 1.10.0+cpu
+onnxruntime-openvino 1.10.0
 packaging            20.3
 pip                  22.0.3
 pluggy               0.13.0
@@ -330,7 +326,6 @@ PyYAML               5.3.1
 setuptools           45.2.0
 six                  1.16.0
 soupsieve            2.3.1
-sympy                1.9
 typing_extensions    4.1.1
 wcwidth              0.1.8
 wheel                0.34.2

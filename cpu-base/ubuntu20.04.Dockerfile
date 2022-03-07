@@ -21,7 +21,6 @@ RUN DEBIAN_FRONTEND="noninteractive" apt install -y \
     bash-completion \
     build-essential \
     ca-certificates \
-    ccache \
     ccze \
     clang \
     clang-format \
@@ -116,8 +115,10 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | \
 
 ENV PATH="/root/.cargo/bin:${PATH}"
 
-RUN . /root/.bashrc && \
-    . /etc/profile.d/bash_completion.sh && \
+SHELL ["/bin/bash", "-c"]
+
+RUN source /root/.bashrc && \
+    source /etc/profile.d/bash_completion.sh && \
     apt update
 
 RUN rustup default ${RUST_VERSION} && \
