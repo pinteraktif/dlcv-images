@@ -166,7 +166,8 @@ SHELL ["/bin/bash", "-c"]
 
 RUN cd /deps/openvino && \
     ./install.sh -s silent.cfg && \
-    source /opt/intel/openvino_2021/bin/setupvars.sh && \
+    rm -rf /opt/intel/openvino_${OPENVINO_VERSION}/opencv && \
+    source /opt/intel/openvino_${OPENVINO_VERSION}/bin/setupvars.sh && \
     cd /deps/onnxruntime && \
     ./build.sh \
     --build_shared_lib \
@@ -179,6 +180,17 @@ RUN cd /deps/openvino && \
     python3 -m pip install build/Linux/Release/dist/*.whl && \
     ldconfig
 
+RUN apt remove -y python3-yaml && \
+    apt autoremove -y
+
+RUN echo "/opt/intel/openvino_${OPENVINO_VERSION}/deployment_tools/inference_engine/lib/intel64" >> /etc/ld.so.conf.d/openvino-ie.conf && \
+    echo "/opt/intel/openvino_${OPENVINO_VERSION}/deployment_tools/ngraph/lib" >> /etc/ld.so.conf.d/openvino-ngraph.conf && \
+    ldconfig && \
+    python3 -m pip install /opt/intel/openvino_2021/deployment_tools/tools/model_downloader
+
+RUN cd /opt/intel/openvino_${OPENVINO_VERSION}/deployment_tools/open_model_zoo/demos && \
+    ./build_demos.sh -DENABLE_PYTHON=1
+
 RUN python3 -m pip list && echo "" && \
     pkg-config --list-all | \
     while read package; \
@@ -187,3 +199,5 @@ RUN python3 -m pip list && echo "" && \
     package_version=$(echo $package_version | cut -d' ' -f1); \
     printf "%-25s => %s\n" ${package_name} ${package_version}; \
     done
+
+WORKDIR /workspace

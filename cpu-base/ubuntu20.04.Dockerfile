@@ -23,9 +23,6 @@ RUN DEBIAN_FRONTEND="noninteractive" apt install -y \
     ca-certificates \
     ccze \
     clang \
-    clang-format \
-    clang-tidy \
-    clang-tools \
     clangd \
     cmake \
     curl \
@@ -57,7 +54,6 @@ RUN DEBIAN_FRONTEND="noninteractive" apt install -y \
     libzstd-dev \
     lld \
     llvm \
-    llvm-dev \
     llvm-spirv \
     meson \
     musl \
@@ -68,7 +64,6 @@ RUN DEBIAN_FRONTEND="noninteractive" apt install -y \
     p7zip-full \
     pkg-config \
     python3 \
-    python3-clang \
     python3-dev \
     python3-pip \
     python3-setuptools \
