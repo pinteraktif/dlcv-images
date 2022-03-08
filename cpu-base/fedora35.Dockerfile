@@ -3,9 +3,10 @@ FROM fedora:35
 LABEL maintainer "Wu Assassin <jambang.pisang@gmail.com>"
 LABEL org.opencontainers.image.source https://github.com/pinteraktif/dlcv-images
 
-ENV PROTOBUF_VERSION="v3.16.0"
 ENV RUST_VERSION="1.59.0"
 USER root
+
+SHELL ["/bin/bash", "-c"]
 
 RUN dnf check-upgrade || dnf upgrade -y
 RUN dnf install -y \
@@ -59,6 +60,7 @@ RUN dnf install -y \
     llvm-static \
     llvm-test \
     llvm-test-suite \
+    meson \
     musl-clang \
     musl-devel \
     musl-filesystem  \
@@ -71,7 +73,6 @@ RUN dnf install -y \
     ninja-build\
     numactl-devel \
     numactl-libs \
-    openblas-devel \
     openssl-devel \
     p7zip \
     pkgconfig \
@@ -100,31 +101,19 @@ RUN dnf clean all
 
 WORKDIR /deps
 
-RUN echo "/usr/local/lib64" > /etc/ld.so.conf.d/general-lib64.conf
-
-RUN git clone \
-    --recursive \
-    --depth 1 \
-    --branch ${PROTOBUF_VERSION} \
-    https://github.com/protocolbuffers/protobuf.git protobuf && \
-    mkdir protobuf/build && \
-    cd protobuf/build && \
-    cmake ../cmake \
-    -D CMAKE_BUILD_TYPE="Release" \
-    -D CMAKE_POSITION_INDEPENDENT_CODE="ON" \
-    -D protobuf_BUILD_SHARED_LIBS="OFF" \
-    -D protobuf_BUILD_TESTS="OFF" && \
-    make -j$(nproc) && \
-    make install && \
-    cd /deps/protobuf/python && \
-    python3 setup.py install && \
-    ldconfig
-
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain stable -y
 
-RUN source /etc/profile.d/bash_completion.sh
-ENV PATH="/root/.cargo/bin:${PATH}"
+RUN source /etc/profile.d/bash_completion.sh && \
+    source /root/.bashrc
+
+ENV PATH="${PATH}:/root/.cargo/bin"
 
 RUN rustup default ${RUST_VERSION} && \
     rustup target add x86_64-unknown-linux-musl && \
     rustup update
+
+RUN gcc -v && echo "" && \
+    clang -v && echo "" && \
+    rustc -vV && echo "" && \
+    python3 --version && \
+    cmake --version
